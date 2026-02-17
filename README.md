@@ -6,7 +6,7 @@ AI가 코드 작성부터 품질 검증, 의도 검증까지 사람 개입 없�
 
 ```bash
 # 스킬 디렉토리에 클론
-git clone https://github.com/yeonsuchoi/agentic-dev-pipeline.git ~/.agents/skills/agentic-dev-pipeline
+git clone https://github.com/ella-yschoi/agentic-dev-pipeline.git ~/.agents/skills/agentic-dev-pipeline
 ```
 
 Claude Code가 `~/.agents/skills/agentic-dev-pipeline/SKILL.md`를 자동으로 인식한다.
@@ -117,7 +117,7 @@ bash ~/.agents/skills/agentic-dev-pipeline/triangular-verify.sh
 
 ## 실험 결과
 
-이 스킬을 사용한 실험 기록은 [renewal-review](https://github.com/yeonsuchoi/renewal-review) 프로젝트의 `docs/logs/experiments-log.md`에서 확인할 수 있다.
+이 스킬을 사용한 실험 기록은 [renewal-review](https://github.com/ella-yschoi/renewal-review) 프로젝트의 `docs/logs/experiments-log.md`에서 확인할 수 있다.
 
 ## 필수 조건
 
