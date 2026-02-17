@@ -1,15 +1,14 @@
 # agentic-dev-pipeline
 
-AI가 코드 작성부터 품질 검증, 의도 검증까지 사람 개입 없이 반복 실행하는 Claude Code 스킬.
+A Claude Code skill that autonomously implements features through an automated loop: code → quality gates → triangular verification → self-correction, with zero human intervention.
 
-## 설치
+## Installation
 
 ```bash
-# 스킬 디렉토리에 클론
 git clone https://github.com/ella-yschoi/agentic-dev-pipeline.git ~/.agents/skills/agentic-dev-pipeline
 ```
 
-Claude Code가 `~/.agents/skills/agentic-dev-pipeline/SKILL.md`를 자동으로 인식한다.
+Claude Code automatically recognizes `~/.agents/skills/agentic-dev-pipeline/SKILL.md`.
 
 ## Quick Start
 
@@ -21,15 +20,15 @@ REQUIREMENTS_FILE="path/to/requirements.md" \
 bash ~/.agents/skills/agentic-dev-pipeline/agentic-dev-pipeline.sh
 ```
 
-Claude Code 세션 안에서:
+Inside a Claude Code session:
 
 ```
-agentic-dev-pipeline Skill을 사용해서 <기능명>을 구현해줘.
+Use the agentic-dev-pipeline skill to implement <feature>.
 PROMPT: path/to/PROMPT.md
 Requirements: path/to/requirements.md
 ```
 
-## 파이프라인 구조
+## Pipeline Structure
 
 ```
 PROMPT.md + requirements.md
@@ -55,9 +54,9 @@ PROMPT.md + requirements.md
 └─────────────────────────────────────────┘
 ```
 
-## 지원 프로젝트 타입
+## Supported Project Types
 
-`detect-project.sh`가 프로젝트 루트를 분석하여 자동 감지한다.
+`detect-project.sh` analyzes the project root to auto-detect tools.
 
 | Type | Detected by | Lint | Test | Security |
 |------|------------|------|------|----------|
@@ -67,11 +66,11 @@ PROMPT.md + requirements.md
 | Go | `go.mod` | golangci-lint / go vet | go test | semgrep / gosec |
 | Custom | env vars | `LINT_CMD` | `TEST_CMD` | `SECURITY_CMD` |
 
-감지 우선순위: **ENV var → Makefile target → package.json script → tool existence**
+Detection priority: **ENV var → Makefile target → package.json script → tool existence**
 
-Python runner: `uv.lock` → `uv run`, `poetry.lock` → `poetry run`, otherwise bare.
+Python runner detection: `uv.lock` → `uv run`, `poetry.lock` → `poetry run`, otherwise bare.
 
-## 환경변수
+## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -85,28 +84,28 @@ Python runner: `uv.lock` → `uv run`, `poetry.lock` → `poetry run`, otherwise
 | `BASE_BRANCH` | `main` | Git diff base branch |
 | `MAX_ITERATIONS` | `5` | Maximum loop iterations |
 
-## 파일 구조
+## File Structure
 
 ```
 agentic-dev-pipeline/
-├── SKILL.md                  ← Claude Code 스킬 정의
-├── agentic-dev-pipeline.sh   ← 메인 루프 스크립트
-├── detect-project.sh         ← 프로젝트 자동 감지
-├── triangular-verify.sh      ← 삼각 검증 단독 실행
-├── PROMPT-TEMPLATE.md        ← 범용 프롬프트 템플릿
+├── SKILL.md                  ← Claude Code skill definition
+├── agentic-dev-pipeline.sh   ← Main loop script
+├── detect-project.sh         ← Project auto-detection library
+├── triangular-verify.sh      ← Standalone triangular verification
+├── PROMPT-TEMPLATE.md        ← Copy-and-fill prompt template
 └── README.md
 ```
 
-## 삼각 검증만 단독 실행
+## Triangular Verification (Standalone)
 
 ```bash
 REQUIREMENTS_FILE="path/to/requirements.md" \
 bash ~/.agents/skills/agentic-dev-pipeline/triangular-verify.sh
 ```
 
-## 출력 파일
+## Output Files
 
-`$OUTPUT_DIR/` (기본: `.agentic-dev-pipeline/`):
+Located in `$OUTPUT_DIR/` (default: `.agentic-dev-pipeline/`):
 
 | File | Content |
 |------|---------|
@@ -115,21 +114,21 @@ bash ~/.agents/skills/agentic-dev-pipeline/triangular-verify.sh
 | `discrepancy-report.md` | Agent C's requirements vs code comparison |
 | `feedback.txt` | Last iteration's feedback (deleted on success) |
 
-## 실험 결과
+## Experiment Results
 
-이 스킬을 사용한 실험 기록은 [renewal-review](https://github.com/ella-yschoi/renewal-review) 프로젝트의 `docs/logs/experiments-log.md`에서 확인할 수 있다.
+Experiment logs using this skill are available in the [renewal-review](https://github.com/ella-yschoi/renewal-review) project at `docs/logs/experiments-log.md`.
 
-## 필수 조건
+## Prerequisites
 
-- [Claude Code](https://claude.ai/claude-code) CLI (`claude` 명령이 PATH에 있어야 함)
-- 프로젝트에 맞는 lint/test 도구 (하나 이상)
+- [Claude Code](https://claude.ai/claude-code) CLI (`claude` must be in PATH)
+- At least one quality tool for your project (lint, test, or security)
 
-## 트러블슈팅
+## Troubleshooting
 
-- **`claude` command not found**: `which claude`로 PATH 확인
-- **Nested claude call blocked**: 터미널에서 직접 실행 권장 (스크립트에 `unset CLAUDECODE` 포함)
-- **Wrong tools detected**: `LINT_CMD`, `TEST_CMD`, `SECURITY_CMD` 환경변수로 오버라이드
-- **TRIANGULAR_PASS not achieved**: `$OUTPUT_DIR/discrepancy-report.md` 확인, requirements를 더 구체적으로 작성
+- **`claude` command not found**: Check PATH with `which claude`
+- **Nested claude call blocked**: Run from a terminal outside Claude Code (scripts include `unset CLAUDECODE`)
+- **Wrong tools detected**: Override with `LINT_CMD`, `TEST_CMD`, `SECURITY_CMD` env vars
+- **TRIANGULAR_PASS not achieved**: Read `$OUTPUT_DIR/discrepancy-report.md` for specifics; make requirements more precise
 
 ## License
 
