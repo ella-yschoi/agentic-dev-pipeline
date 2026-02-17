@@ -1,0 +1,8 @@
+# agentic-dev-pipeline configuration
+# See: https://github.com/ella-yschoi/agentic-dev-pipeline
+
+prompt-file = "PROMPT.md"
+requirements-file = "requirements.md"
+max-iterations = 5
+# timeout = 300
+# base-branch = "main"

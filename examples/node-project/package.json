@@ -1,0 +1,13 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "dev": "node src/index.js"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "vitest": "^3.0.0"
+  }
+}
