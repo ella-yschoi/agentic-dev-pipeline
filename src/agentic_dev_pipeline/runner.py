@@ -21,6 +21,9 @@ class ClaudeRunner(Protocol):
 class CliClaudeRunner:
     """Run claude CLI via subprocess with retry and backoff."""
 
+    def __init__(self, *, model: str = "") -> None:
+        self._model = model
+
     def run(
         self,
         prompt: str,
@@ -31,8 +34,12 @@ class CliClaudeRunner:
     ) -> str:
         for attempt in range(1, max_retries + 1):
             try:
+                cmd = ["claude", "--print"]
+                if self._model:
+                    cmd.extend(["--model", self._model])
+                cmd.extend(["-p", prompt])
                 result = subprocess.run(
-                    ["claude", "--print", "-p", prompt],
+                    cmd,
                     capture_output=True,
                     text=True,
                     timeout=timeout,

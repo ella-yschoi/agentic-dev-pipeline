@@ -22,6 +22,8 @@ class Pipeline:
         max_iterations: int | None = None,
         timeout: int | None = None,
         base_branch: str | None = None,
+        claude_model: str | None = None,
+        claude_model_verify: str | None = None,
         project_root: str | Path | None = None,
     ) -> None:
         root = Path(project_root) if project_root else Path.cwd()
@@ -38,6 +40,10 @@ class Pipeline:
             explicit["timeout"] = timeout
         if base_branch is not None:
             explicit["base_branch"] = base_branch
+        if claude_model is not None:
+            explicit["claude_model"] = claude_model
+        if claude_model_verify is not None:
+            explicit["claude_model_verify"] = claude_model_verify
 
         self._config = PipelineConfig.resolve(explicit, project_root=root)
         self._project_root = root
@@ -78,6 +84,8 @@ class Pipeline:
             config=project_config,
             logger=logger,
             custom_gates=self._custom_gates or None,
+            claude_model=cfg.claude_model,
+            claude_model_verify=cfg.claude_model_verify,
         )
 
     def verify(self) -> bool:

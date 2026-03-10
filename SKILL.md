@@ -106,6 +106,8 @@ max-iterations = 3
 | `CLAUDE_TIMEOUT` | `timeout` | `300` |
 | `MAX_RETRIES` | `max-retries` | `2` |
 | `BASE_BRANCH` | `base-branch` | `main` |
+| `CLAUDE_MODEL` | `claude-model` | `sonnet` |
+| `CLAUDE_MODEL_VERIFY` | `claude-model-verify` | `haiku` |
 
 ## Environment Variable Reference
 
@@ -119,6 +121,8 @@ max-iterations = 3
 | `CLAUDE_TIMEOUT` | `300` | Timeout per claude call (seconds) |
 | `MAX_RETRIES` | `2` | Max retries per claude call |
 | `BASE_BRANCH` | `main` | Git diff base branch |
+| `CLAUDE_MODEL` | `sonnet` | Model for implementation agent (sonnet, opus, haiku) |
+| `CLAUDE_MODEL_VERIFY` | `haiku` | Model for verification agents B/C (haiku, sonnet, opus) |
 
 ### CLI-only variables (not in config files)
 

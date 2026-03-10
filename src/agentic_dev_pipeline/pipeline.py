@@ -259,6 +259,8 @@ def run_pipeline(
     logger: Logger | None = None,
     custom_gates: list[tuple[str, Callable[[], tuple[bool, str]]]] | None = None,
     runner: ClaudeRunner | None = None,
+    claude_model: str = "sonnet",
+    claude_model_verify: str = "haiku",
 ) -> bool:
     """Run the full agentic dev pipeline.
 
@@ -277,7 +279,8 @@ def run_pipeline(
         logger = Logger(log_file=out / "loop-execution.log")
 
     cfg = config or detect_all()
-    _runner = runner or CliClaudeRunner()
+    _runner = runner or CliClaudeRunner(model=claude_model)
+    _verify_runner = CliClaudeRunner(model=claude_model_verify)
     feedback_file = out / "feedback.txt"
     metrics = PipelineMetrics(started_at=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
     use_parallel = parallel_gates if parallel_gates is not None else (
@@ -398,7 +401,7 @@ def run_pipeline(
                 timeout=claude_timeout,
                 max_retries=max_retries,
                 logger=logger,
-                runner=_runner,
+                runner=_verify_runner,
             )
 
             if passed:

@@ -74,6 +74,16 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Git base branch (default: main)",
     )
     run_parser.add_argument(
+        "--model",
+        default=None,
+        help="Claude model for implementation (default: sonnet)",
+    )
+    run_parser.add_argument(
+        "--model-verify",
+        default=None,
+        help="Claude model for verification agents (default: haiku)",
+    )
+    run_parser.add_argument(
         "--webhook-url",
         default=None,
         help="Webhook URL for notifications (default: $WEBHOOK_URL)",
@@ -200,6 +210,10 @@ def main() -> None:
             explicit["max_retries"] = args.max_retries
         if args.base_branch is not None:
             explicit["base_branch"] = args.base_branch
+        if args.model is not None:
+            explicit["claude_model"] = args.model
+        if args.model_verify is not None:
+            explicit["claude_model_verify"] = args.model_verify
 
         cfg = PipelineConfig.resolve(explicit)
 
@@ -257,6 +271,8 @@ def main() -> None:
             plugin_dir=args.plugin_dir,
             config=project_config,
             logger=logger,
+            claude_model=cfg.claude_model,
+            claude_model_verify=cfg.claude_model_verify,
         )
 
         sys.exit(0 if converged else 1)

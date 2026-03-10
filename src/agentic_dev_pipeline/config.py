@@ -12,6 +12,8 @@ _KEY_MAP: dict[str, str] = {
     "max-iterations": "max_iterations",
     "max-retries": "max_retries",
     "base-branch": "base_branch",
+    "claude-model": "claude_model",
+    "claude-model-verify": "claude_model_verify",
 }
 
 # Environment variable → dataclass field
@@ -22,6 +24,8 @@ _ENV_MAP: dict[str, str] = {
     "CLAUDE_TIMEOUT": "timeout",
     "MAX_RETRIES": "max_retries",
     "BASE_BRANCH": "base_branch",
+    "CLAUDE_MODEL": "claude_model",
+    "CLAUDE_MODEL_VERIFY": "claude_model_verify",
 }
 
 _INT_FIELDS = {"max_iterations", "timeout", "max_retries"}
@@ -72,6 +76,8 @@ class PipelineConfig:
     timeout: int = 300
     max_retries: int = 2
     base_branch: str = "main"
+    claude_model: str = "sonnet"
+    claude_model_verify: str = "haiku"
 
     @staticmethod
     def from_pyproject(root: Path | None = None) -> dict[str, object]:
